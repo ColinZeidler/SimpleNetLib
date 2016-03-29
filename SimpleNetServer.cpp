@@ -2,11 +2,9 @@
 // Created by Colin on 2016-03-27.
 //
 
-#include <winsock2.h>
 #include "SimpleNetServer.h"
 
 SimpleNetServer::SimpleNetServer(u_short port) {
-    clients = 0;
     success = 0;
     int err = 0;
     //Start initializing the server connection
@@ -39,16 +37,17 @@ SimpleNetServer::SimpleNetServer(u_short port) {
 }
 
 SimpleNetServer::~SimpleNetServer() {
-
+    closesocket(serverSock);
+    WSACleanup();
 }
 
 /**
  * return codes:
+ *  -1 - OK, no new client
  *  0 - OK, client accepted
- *  1 - ERROR, too many clients
  *  2 - ERROR, INVALID_SOCKET on accept
  */
-int SimpleNetServer::acceptConnection(unique_ptr<SimpleNetConn> newConnection) {
+int SimpleNetServer::acceptConnection(unique_ptr<SimpleNetClient> newConnection) {
     //setup timeout
     FD_ZERO(&fd);
     FD_SET(serverSock, &fd);
@@ -56,10 +55,17 @@ int SimpleNetServer::acceptConnection(unique_ptr<SimpleNetConn> newConnection) {
     time.tv_usec = ACCEPT_TIMEOUT_MS;
 
     if (select(0, &fd, NULL, NULL, &time) > 0) {
+        SOCKADDR_IN i_client;
         int solen = sizeof(i_client);
-        clientSocks[clients] = accept(serverSock, (sockaddr *) &i_client, &solen);
-        if (clientSocks[clients] == INVALID_SOCKET) {
+        shared_ptr<SimpleNetConn> newConn = shared_ptr(
+                new SimpleNetConn(accept(serverSock, (sockaddr *) &i_client, &solen)));
+        newConn->setISock(i_client);
+        if (newConn->getSocket() == INVALID_SOCKET) {
             return 2;
         }
+        newConnection->setConnection(newConn);
+        return 0;
+    } else {
+        return -1;
     }
 }

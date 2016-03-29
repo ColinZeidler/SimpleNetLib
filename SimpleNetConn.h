@@ -7,20 +7,23 @@
 
 #include <string>
 #include <bits/unique_ptr.h>
+#include <bits/shared_ptr.h>
 #include <windows.h>
 
 using namespace std;
 class SimpleNetConn {
 public:
     SimpleNetConn(unique_ptr<string> serverIp);
-    SimpleNetConn();
+    SimpleNetConn(SOCKET socket);
     ~SimpleNetConn();
 
     int send(unique_ptr<string> data);
     int recv(unique_ptr<string> data);
-    void setSocket(SOCKET);
+    void setISock(SOCKADDR_IN i_sock);
+    SOCKET getSocket();
 private:
     SOCKET socket;
+    SOCKADDR_IN i_socket;
     bool connected;
 };
 

@@ -5,7 +5,9 @@
 #ifndef SIMPLENETWORKING_SIMPLENETSERVER_H
 #define SIMPLENETWORKING_SIMPLENETSERVER_H
 #include "SimpleNetConn.h"
-#include "commons.h"
+#include "SimpleNetClient.h"
+#include <bits/shared_ptr.h>
+#include <bits/unique_ptr.h>
 #include <windows.h>
 
 #pragma comment(lib, "ws2_32.lib")
@@ -18,7 +20,7 @@ public:
     SimpleNetServer(u_short port);
     ~SimpleNetServer();
     
-    int acceptConnection(unique_ptr<SimpleNetConn> newConnection);
+    int acceptConnection(unique_ptr<SimpleNetClient> newConnection);
 private:
 
 //variables
@@ -27,9 +29,7 @@ public:
     
 private:
     SOCKET serverSock;
-    SOCKET clientSocks[MAX_CLIENTS];
     SOCKADDR_IN i_server;
-    SOCKADDR_IN i_client;
     WSADATA Data;
 
     fd_set fd;

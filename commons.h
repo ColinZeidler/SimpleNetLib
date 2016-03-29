@@ -1,8 +1,0 @@
-//
-// Created by Colin on 2016-03-27.
-//
-
-#ifndef SIMPLENETWORKING_COMMONS_H
-#define SIMPLENETWORKING_COMMONS_H
-
-#endif //SIMPLENETWORKING_COMMONS_H

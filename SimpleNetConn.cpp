@@ -11,8 +11,9 @@ SimpleNetConn::SimpleNetConn(unique_ptr<string> serverIp) {
     connected = false;
 }
 
-SimpleNetConn::SimpleNetConn() {
-    connected = false;
+SimpleNetConn::SimpleNetConn(SOCKET socket) {
+    this->socket = socket;
+    connected = true;
 }
 
 /**
@@ -40,4 +41,12 @@ int SimpleNetConn::recv(unique_ptr<string> data) {
 
 void SimpleNetConn::setSocket(SOCKET socket1) {
     socket = socket1;
+}
+
+SOCKET SimpleNetConn::getSocket() {
+    return socket;
+}
+
+void SimpleNetConn::setISock(SOCKADDR_IN i_sock) {
+    i_socket = i_sock;
 }
