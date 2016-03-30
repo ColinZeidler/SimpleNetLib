@@ -3,16 +3,27 @@
 //
 
 #include <iostream>
-#include <bits/unique_ptr.h>
 #include "SimpleNetServer.h"
 
 using namespace std;
 
 int main() {
     cout << "Hello, World! Server" << endl;
-    unique_ptr<SimpleNetServer> server(new SimpleNetServer(5432));
-    if (server->success != 1) {
+    SimpleNetServer server(5432);
+    if (server.success != 1) {
         //failed to create server, exit
         return 0;
     }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
+    while(true){ // main server loop
+        int connResult = 0;
+        SimpleNetClient *newClient = new SimpleNetClient();
+        connResult = server.acceptConnection(newClient);
+        if (connResult == 0) {
+            cout << "new client has connected" << endl;
+        }
+        delete newClient;
+    }
+#pragma clang diagnostic pop
 }

@@ -7,7 +7,7 @@
 /**
  * attempts to establish a connection and create a new socket
  */
-SimpleNetConn::SimpleNetConn(unique_ptr<string> serverIp) {
+SimpleNetConn::SimpleNetConn(string *serverIp) {
     connected = false;
 }
 
@@ -20,7 +20,7 @@ SimpleNetConn::SimpleNetConn(SOCKET socket) {
  * ensures the connection is closed properly
  */
 SimpleNetConn::~SimpleNetConn() {
-
+    // TODO close connection
 }
 
 /**
@@ -28,7 +28,7 @@ SimpleNetConn::~SimpleNetConn() {
  * data, unique_ptr<string> of data to send
  */
 int SimpleNetConn::send(string **data) {
-    return 0;
+    return 0; // TODO send data in string
 }
 
 /**
@@ -36,7 +36,7 @@ int SimpleNetConn::send(string **data) {
  * data, unique_ptr<string> to put the received data into
  */
 int SimpleNetConn::recv(string **data) {
-    return 0;
+    return 0; // TODO receive data and insert into string
 }
 
 SOCKET SimpleNetConn::getSocket() {

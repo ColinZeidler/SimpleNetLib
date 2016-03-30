@@ -6,13 +6,12 @@
 #define SIMPLENETWORKING_SIMPLENETCONN_H
 
 #include <string>
-#include <bits/unique_ptr.h>
 #include <windows.h>
 
 using namespace std;
 class SimpleNetConn {
 public:
-    SimpleNetConn(unique_ptr<string> serverIp);
+    SimpleNetConn(string *serverIp);
     SimpleNetConn(SOCKET socket);
     ~SimpleNetConn();
 

@@ -2,6 +2,7 @@
 // Created by Colin on 2016-03-27.
 //
 
+#include <iostream>
 #include "SimpleNetServer.h"
 
 SimpleNetServer::SimpleNetServer(u_short port) {
@@ -47,7 +48,7 @@ SimpleNetServer::~SimpleNetServer() {
  *  0 - OK, client accepted
  *  2 - ERROR, INVALID_SOCKET on accept
  */
-int SimpleNetServer::acceptConnection(unique_ptr<SimpleNetClient> newConnection) {
+int SimpleNetServer::acceptConnection(SimpleNetClient *newConnection) {
     //setup timeout
     FD_ZERO(&fd);
     FD_SET(serverSock, &fd);
@@ -66,6 +67,7 @@ int SimpleNetServer::acceptConnection(unique_ptr<SimpleNetClient> newConnection)
         newConnection->setConnection(newConn);
         return 0;
     } else {
+        cout << "no new connections pending" << endl;
         return -1;
     }
 }

@@ -7,13 +7,13 @@
 
 #include <string>
 #include <windows.h>
-#include <bits/unique_ptr.h>
 #include "SimpleNetConn.h"
 
 using namespace std;
 class SimpleNetClient {
 public:
-    SimpleNetClient(unique_ptr<string> address, int port);
+    SimpleNetClient(string *address, int port);
+    SimpleNetClient();
     ~SimpleNetClient();
 
     void setConnection(SimpleNetConn *newConn);

@@ -6,7 +6,6 @@
 #define SIMPLENETWORKING_SIMPLENETSERVER_H
 #include "SimpleNetConn.h"
 #include "SimpleNetClient.h"
-#include <bits/unique_ptr.h>
 #include <windows.h>
 
 #define ACCEPT_TIMEOUT_S 0
@@ -18,7 +17,7 @@ public:
     SimpleNetServer(u_short port);
     ~SimpleNetServer();
     
-    int acceptConnection(unique_ptr<SimpleNetClient> newConnection);
+    int acceptConnection(SimpleNetClient *newConnection);
 private:
 
 //variables
