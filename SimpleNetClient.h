@@ -7,8 +7,7 @@
 
 #include <string>
 #include <windows.h>
-#include <bits/unique_ptr.h>
-#include <bits/shared_ptr.h>
+#include <memory>
 #include "SimpleNetConn.h"
 
 using namespace std;
