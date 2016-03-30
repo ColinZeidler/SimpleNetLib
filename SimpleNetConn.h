@@ -6,8 +6,7 @@
 #define SIMPLENETWORKING_SIMPLENETCONN_H
 
 #include <string>
-#include <bits/unique_ptr.h>
-#include <bits/shared_ptr.h>
+#include <memory>
 #include <windows.h>
 
 using namespace std;
