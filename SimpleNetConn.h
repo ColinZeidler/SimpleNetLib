@@ -7,7 +7,6 @@
 
 #include <string>
 #include <bits/unique_ptr.h>
-#include <bits/shared_ptr.h>
 #include <windows.h>
 
 using namespace std;
@@ -17,8 +16,8 @@ public:
     SimpleNetConn(SOCKET socket);
     ~SimpleNetConn();
 
-    int send(unique_ptr<string> data);
-    int recv(unique_ptr<string> data);
+    int send(string **data);
+    int recv(string **data);
     void setISock(SOCKADDR_IN i_sock);
     SOCKET getSocket();
 private:

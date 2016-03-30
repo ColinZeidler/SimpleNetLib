@@ -8,7 +8,6 @@
 #include <string>
 #include <windows.h>
 #include <bits/unique_ptr.h>
-#include <bits/shared_ptr.h>
 #include "SimpleNetConn.h"
 
 using namespace std;
@@ -17,12 +16,12 @@ public:
     SimpleNetClient(unique_ptr<string> address, int port);
     ~SimpleNetClient();
 
-    void setConnection(shared_ptr<SimpleNetConn> newConn);
+    void setConnection(SimpleNetConn *newConn);
 
-    int read(unique_ptr<string>);
-    int send(unique_ptr<string>);
+    int read(string**);
+    int send(string**);
 private:
-    shared_ptr<SimpleNetConn> connection;
+    SimpleNetConn *connection;
     bool connected;
 };
 

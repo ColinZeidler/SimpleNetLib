@@ -57,8 +57,8 @@ int SimpleNetServer::acceptConnection(unique_ptr<SimpleNetClient> newConnection)
     if (select(0, &fd, NULL, NULL, &time) > 0) {
         SOCKADDR_IN i_client;
         int solen = sizeof(i_client);
-        shared_ptr<SimpleNetConn> newConn = shared_ptr(
-                new SimpleNetConn(accept(serverSock, (sockaddr *) &i_client, &solen)));
+        SimpleNetConn *newConn = new SimpleNetConn(
+                accept(serverSock, (sockaddr *) &i_client, &solen));
         newConn->setISock(i_client);
         if (newConn->getSocket() == INVALID_SOCKET) {
             return 2;

@@ -5,7 +5,7 @@
 #include "SimpleNetConn.h"
 
 /**
- * attempts to establish a connection
+ * attempts to establish a connection and create a new socket
  */
 SimpleNetConn::SimpleNetConn(unique_ptr<string> serverIp) {
     connected = false;
@@ -27,7 +27,7 @@ SimpleNetConn::~SimpleNetConn() {
  * returns the number of bytes? bits? that were sent
  * data, unique_ptr<string> of data to send
  */
-int SimpleNetConn::send(unique_ptr<string> data) {
+int SimpleNetConn::send(string **data) {
     return 0;
 }
 
@@ -35,12 +35,8 @@ int SimpleNetConn::send(unique_ptr<string> data) {
  * returns number of  bytes? bits? that were read
  * data, unique_ptr<string> to put the received data into
  */
-int SimpleNetConn::recv(unique_ptr<string> data) {
+int SimpleNetConn::recv(string **data) {
     return 0;
-}
-
-void SimpleNetConn::setSocket(SOCKET socket1) {
-    socket = socket1;
 }
 
 SOCKET SimpleNetConn::getSocket() {

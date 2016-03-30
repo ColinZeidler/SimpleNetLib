@@ -10,3 +10,7 @@ set(SERVER_SOURCE serverMain.cpp ${SOURCE_FILES})
 add_executable(SimpleNetServer ${SERVER_SOURCE})
 add_executable(SimpleNetClient ${CLIENT_SOURCE})
 add_library(SimpleNetworking ${SOURCE_FILES})
+
+target_link_libraries(SimpleNetClient ws2_32)
+target_link_libraries(SimpleNetServer ws2_32)
+target_link_libraries(SimpleNetworking ws2_32)

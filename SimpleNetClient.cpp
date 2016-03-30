@@ -12,15 +12,15 @@ SimpleNetClient::~SimpleNetClient() {
     // TODO close connection
 }
 
-int SimpleNetClient::read(unique_ptr<string> ptr) {
+int SimpleNetClient::read(string **ptr) {
     return this->connection->recv(ptr);
 }
 
-int SimpleNetClient::send(unique_ptr<string> ptr) {
+int SimpleNetClient::send(string **ptr) {
     return this->connection->send(ptr);
 }
 
-void SimpleNetClient::setConnection(shared_ptr<SimpleNetConn> newConn) {
-    this->connection = newConn;
+void SimpleNetClient::setConnection(SimpleNetConn *newConn) {
+    connection = newConn;
     connected = true;
 }
