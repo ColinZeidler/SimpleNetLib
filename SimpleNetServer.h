@@ -6,8 +6,7 @@
 #define SIMPLENETWORKING_SIMPLENETSERVER_H
 #include "SimpleNetConn.h"
 #include "SimpleNetClient.h"
-#include <bits/shared_ptr.h>
-#include <bits/unique_ptr.h>
+#include <memory>
 #include <windows.h>
 
 #pragma comment(lib, "ws2_32.lib")
