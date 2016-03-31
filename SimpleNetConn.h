@@ -11,7 +11,7 @@
 using namespace std;
 class SimpleNetConn {
 public:
-    SimpleNetConn(string *serverIp);
+    SimpleNetConn(string *serverIp, u_short port);
     SimpleNetConn(SOCKET socket);
     ~SimpleNetConn();
 
