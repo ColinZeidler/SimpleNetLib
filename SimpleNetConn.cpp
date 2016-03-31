@@ -48,11 +48,25 @@ SimpleNetConn::~SimpleNetConn() {
  * data, unique_ptr<string> of data to send
  */
 int SimpleNetConn::send(string **data) {
+    uint32_t dSize = (unint32_t)(*data)->length();
+    uint32_t sSize = 0;
+    uint32_t remain = dSize;
     //send size of data
+    char sizeBuf[4];
+    sizeBuf[0] = dSize & 0xFF;
+    sizeBuf[1] = (dSize >> 8) & 0xFF;
+    sizeBuf[2] = (dSize >> 16) & 0xFF;
+    sizeBuf[3] = (dSize >> 24) & 0xFF;
+    ::send(socket, sizeBuf, 4, 0)
     //send data
     const char *buf = (*data)->c_str();
-    int bufLen = (*data)->length();
-    return ::send(socket, buf, bufLen, 0);
+    while (sSize < dSize) {
+        // TODO remove s bytes from front of buf
+        int s = ::send(socket, buf, remain, 0)
+        sSize += s;
+        remain -= s;
+    }
+    return ;
 }
 
 /**
@@ -61,8 +75,21 @@ int SimpleNetConn::send(string **data) {
  */
 int SimpleNetConn::recv(string **data) {
     char *buff;
-//    int rCount = ::recv(socket, buff, )
-    return 0; // TODO receive data and insert into string
+    ::recv(socket, buff, 4, 0);
+    uint32_t rSize = 0;
+    uint32_t dSize = 0;
+    dSize |= buff[0];
+    dSize |= (buff[1] << 8);
+    dSize |= (buff[2] << 16);
+    dSize |= (buff[3] << 24);
+    uint32_t remain = dSize;
+    while(rSize < dSize) {
+        // TODO append r bytes to end of buff
+        int r = ::recv(socket, buff, remain, 0);
+        rSize += r;
+        remain -= r;
+    }
+    return rSize; // TODO receive data and insert into string
 }
 
 SOCKET SimpleNetConn::getSocket() {
