@@ -32,5 +32,4 @@ The size of the data from the first 4 byte read will have to be converted from a
 EX: data = char[0x02, 0x86, 0x00, 0x80] = 0x80008602 = size
 
 ## Threading decisions
-Project is currently being built with non blocking actions in mind, so no thread management will be required. 
-Future changes will allow a choice between blocking and non blocking actions incase a multi-threaded project is desired
+Project is currently being built with blocking actions in mind. The user will have to manage the threads that they require if they wish to have their prgram continue while waiting for an accept or recv.
