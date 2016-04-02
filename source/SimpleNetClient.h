@@ -12,11 +12,13 @@
 using namespace std;
 class SimpleNetClient {
 public:
-    SimpleNetClient(string *address, int port);
+    SimpleNetClient(string *address, u_short port);
+    SimpleNetClient(const char *address, u_short port);
     SimpleNetClient();
     ~SimpleNetClient();
 
     void setConnection(SimpleNetConn *newConn);
+    bool isConnected() { return connected; }
 
     int read(string**);
     int send(string**);

@@ -14,7 +14,7 @@
 using namespace std;
 class SimpleNetConn {
 public:
-    SimpleNetConn(string *serverIp, u_short port);
+    SimpleNetConn(const char *serverIp, u_short port);
     SimpleNetConn(SOCKET socket);
     ~SimpleNetConn();
 
@@ -22,6 +22,7 @@ public:
     int recv(string **data);
     void setISock(SOCKADDR_IN i_sock);
     SOCKET getSocket();
+    bool isConnected() { return connected; }
 private:
     SOCKET socket;
     SOCKADDR_IN i_socket;

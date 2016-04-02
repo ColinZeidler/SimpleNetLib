@@ -3,12 +3,13 @@
 //
 
 #include <afxres.h>
+#include <iostream>
 #include "SimpleNetConn.h"
 
 /**
  * attempts to establish a connection and create a new socket
  */
-SimpleNetConn::SimpleNetConn(string *serverIp, u_short port) {
+SimpleNetConn::SimpleNetConn(const char *serverIp, u_short port) {
     WSADATA data;
     WSAStartup(MAKEWORD(2, 2), &data);
     socket = ::socket(AF_INET, SOCK_STREAM, 0);
@@ -19,7 +20,7 @@ SimpleNetConn::SimpleNetConn(string *serverIp, u_short port) {
     }
 
     i_socket.sin_family = AF_INET;
-    i_socket.sin_addr.S_un.S_addr = inet_addr(serverIp->c_str());
+    i_socket.sin_addr.S_un.S_addr = inet_addr(serverIp);
     i_socket.sin_port = htons(port);
     int ss = ::connect(socket, (struct sockaddr *)&i_socket, sizeof(i_socket));
     if (ss != 0) {
@@ -58,11 +59,14 @@ int SimpleNetConn::send(string **data) {
     sizeBuf[2] = (char)((dSize >> 16) & 0xFF);
     sizeBuf[3] = (char)((dSize >> 24) & 0xFF);
     ::send(socket, sizeBuf, 4, 0);
+    cout << sizeBuf << endl;
+    cout << dSize << endl;
     //send data
     const char *buf = (*data)->c_str();
     while (sSize < dSize) {
         // TODO remove s bytes from front of buf
         int s = ::send(socket, buf, remain, 0);
+
         sSize += s;
         remain -= s;
     }

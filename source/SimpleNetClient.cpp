@@ -4,11 +4,22 @@
 
 #include "SimpleNetClient.h"
 
-SimpleNetClient::SimpleNetClient(string *address, int port) {
-    // TODO attempt to connect to remote server at address, port
+SimpleNetClient::SimpleNetClient(string *address, u_short port) {
+    connection = new SimpleNetConn(address->c_str(), port);
+    if (connection->isConnected()) {
+        connected = true;
+    }
 }
 
-SimpleNetClient::SimpleNetClient() { }
+SimpleNetClient::SimpleNetClient(const char *address, u_short port) {
+    connection = new SimpleNetConn(address, port);
+    if (connection->isConnected()) {
+        connected = true;
+    }
+}
+
+SimpleNetClient::SimpleNetClient() {
+}
 
 SimpleNetClient::~SimpleNetClient() {
     delete connection;
@@ -26,5 +37,7 @@ void SimpleNetClient::setConnection(SimpleNetConn *newConn) {
     connection = newConn;
     connected = true;
 }
+
+
 
 
