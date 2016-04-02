@@ -76,15 +76,8 @@ int SimpleNetConn::send(string **data) {
  * calling scope is responsible for cleaning up string pointer.
  */
 int SimpleNetConn::recv(string **data) {
-    //TODO needs timeout for first read, and cancel if not ready
-    DWORD oldtime;
-    int timeSize = sizeof(DWORD);
-    getsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (char*) &oldtime, &timeSize);
-    DWORD time = ACCEPT_TIMEOUT_MS;
-    //set timeout to short value
-    setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (char*) &time, timeSize);
     (*data) = new string();
-    char *buff;
+    char buff[256];
     int rLen = ::recv(socket, buff, 4, 0);
     if (rLen > 0) {
         uint32_t rSize = 0;
@@ -94,8 +87,7 @@ int SimpleNetConn::recv(string **data) {
         dSize |= (buff[2] << 16);
         dSize |= (buff[3] << 24);
         uint32_t remain = dSize;
-        //Return timeout to default value
-        setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (char *) &oldtime, timeSize);
+
         while (rSize < dSize) {
             int r = ::recv(socket, buff, remain, 0);
             (*data)->append(buff);

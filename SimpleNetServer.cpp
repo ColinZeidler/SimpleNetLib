@@ -44,30 +44,18 @@ SimpleNetServer::~SimpleNetServer() {
 
 /**
  * return codes:
- *  -1 - OK, no new client
  *  0 - OK, client accepted
  *  2 - ERROR, INVALID_SOCKET on accept
  */
 int SimpleNetServer::acceptConnection(SimpleNetClient *newConnection) {
-    //setup timeout
-    FD_ZERO(&fd);
-    FD_SET(serverSock, &fd);
-    time.tv_sec = ACCEPT_TIMEOUT_S;
-    time.tv_usec = ACCEPT_TIMEOUT_MS;
-
-    if (select(0, &fd, NULL, NULL, &time) > 0) {
-        SOCKADDR_IN i_client;
-        int solen = sizeof(i_client);
-        SimpleNetConn *newConn = new SimpleNetConn(
-                accept(serverSock, (sockaddr *) &i_client, &solen));
-        newConn->setISock(i_client);
-        if (newConn->getSocket() == INVALID_SOCKET) {
-            return 2;
-        }
-        newConnection->setConnection(newConn);
-        return 0;
-    } else {
-        cout << "no new connections pending" << endl;
-        return -1;
+    SOCKADDR_IN i_client;
+    int solen = sizeof(i_client);
+    SimpleNetConn *newConn = new SimpleNetConn(
+            accept(serverSock, (sockaddr *) &i_client, &solen));
+    newConn->setISock(i_client);
+    if (newConn->getSocket() == INVALID_SOCKET) {
+        return 2;
     }
+    newConnection->setConnection(newConn);
+    return 0;
 }
