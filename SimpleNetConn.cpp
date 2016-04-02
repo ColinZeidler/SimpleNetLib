@@ -48,48 +48,64 @@ SimpleNetConn::~SimpleNetConn() {
  * data, unique_ptr<string> of data to send
  */
 int SimpleNetConn::send(string **data) {
-    uint32_t dSize = (unint32_t)(*data)->length();
+    uint32_t dSize = (uint32_t)(*data)->length();
     uint32_t sSize = 0;
     uint32_t remain = dSize;
     //send size of data
     char sizeBuf[4];
-    sizeBuf[0] = dSize & 0xFF;
-    sizeBuf[1] = (dSize >> 8) & 0xFF;
-    sizeBuf[2] = (dSize >> 16) & 0xFF;
-    sizeBuf[3] = (dSize >> 24) & 0xFF;
-    ::send(socket, sizeBuf, 4, 0)
+    sizeBuf[0] = (char)(dSize & 0xFF);
+    sizeBuf[1] = (char)((dSize >> 8) & 0xFF);
+    sizeBuf[2] = (char)((dSize >> 16) & 0xFF);
+    sizeBuf[3] = (char)((dSize >> 24) & 0xFF);
+    ::send(socket, sizeBuf, 4, 0);
     //send data
     const char *buf = (*data)->c_str();
     while (sSize < dSize) {
         // TODO remove s bytes from front of buf
-        int s = ::send(socket, buf, remain, 0)
+        int s = ::send(socket, buf, remain, 0);
         sSize += s;
         remain -= s;
     }
-    return ;
+    return sSize;
 }
 
 /**
  * returns number of  bytes? bits? that were read
  * data, unique_ptr<string> to put the received data into
+ *
+ * calling scope is responsible for cleaning up string pointer.
  */
 int SimpleNetConn::recv(string **data) {
+    //TODO needs timeout for first read, and cancel if not ready
+    DWORD oldtime;
+    int timeSize = sizeof(DWORD);
+    getsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (char*) &oldtime, &timeSize);
+    DWORD time = ACCEPT_TIMEOUT_MS;
+    //set timeout to short value
+    setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (char*) &time, timeSize);
+    (*data) = new string();
     char *buff;
-    ::recv(socket, buff, 4, 0);
-    uint32_t rSize = 0;
-    uint32_t dSize = 0;
-    dSize |= buff[0];
-    dSize |= (buff[1] << 8);
-    dSize |= (buff[2] << 16);
-    dSize |= (buff[3] << 24);
-    uint32_t remain = dSize;
-    while(rSize < dSize) {
-        // TODO append r bytes to end of buff
-        int r = ::recv(socket, buff, remain, 0);
-        rSize += r;
-        remain -= r;
+    int rLen = ::recv(socket, buff, 4, 0);
+    if (rLen > 0) {
+        uint32_t rSize = 0;
+        uint32_t dSize = 0;
+        dSize |= buff[0];
+        dSize |= (buff[1] << 8);
+        dSize |= (buff[2] << 16);
+        dSize |= (buff[3] << 24);
+        uint32_t remain = dSize;
+        //Return timeout to default value
+        setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (char *) &oldtime, timeSize);
+        while (rSize < dSize) {
+            int r = ::recv(socket, buff, remain, 0);
+            (*data)->append(buff);
+            rSize += r;
+            remain -= r;
+        }
+        return rSize;
+    } else {
+        return 0;
     }
-    return rSize; // TODO receive data and insert into string
 }
 
 SOCKET SimpleNetConn::getSocket() {

@@ -8,6 +8,9 @@
 #include <string>
 #include <windows.h>
 
+#define ACCEPT_TIMEOUT_S 0
+#define ACCEPT_TIMEOUT_MS 250
+
 using namespace std;
 class SimpleNetConn {
 public:
