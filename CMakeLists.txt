@@ -3,9 +3,9 @@ project(SimpleNetworking)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES SimpleNetConn.cpp SimpleNetConn.h SimpleNetServer.cpp SimpleNetServer.h SimpleNetClient.cpp SimpleNetClient.h)
-set(CLIENT_SOURCE clientMain.cpp ${SOURCE_FILES})
-set(SERVER_SOURCE serverMain.cpp ${SOURCE_FILES})
+set(SOURCE_FILES source/SimpleNetConn.cpp source/SimpleNetConn.h source/SimpleNetServer.cpp source/SimpleNetServer.h source/SimpleNetClient.cpp source/SimpleNetClient.h)
+set(CLIENT_SOURCE test/clientMain.cpp ${SOURCE_FILES})
+set(SERVER_SOURCE test/serverMain.cpp ${SOURCE_FILES})
 
 add_executable(SimpleNetServer ${SERVER_SOURCE})
 add_executable(SimpleNetClient ${CLIENT_SOURCE})

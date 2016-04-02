@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "SimpleNetServer.h"
+#include "../source/SimpleNetServer.h"
 
 using namespace std;
 
@@ -22,6 +22,7 @@ int main() {
         connResult = server.acceptConnection(newClient);
         if (connResult == 0) {
             cout << "new client has connected" << endl;
+            // This is where a thread would be spawned for the new client
         }
         delete newClient;
     }
