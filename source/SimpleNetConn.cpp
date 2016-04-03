@@ -46,7 +46,7 @@ SimpleNetConn::SimpleNetConn(SOCKET socket, SOCKADDR_IN i_sock) {
 SimpleNetConn::~SimpleNetConn() {
     closesocket(socket);
     if (cleanup) {
-        WSACleanup(); //TODO this can't be done on the server, it breaks things
+        WSACleanup();
     }
 }
 
@@ -68,7 +68,7 @@ int SimpleNetConn::send(string **data) {
     //send data
     const char *buf = (*data)->c_str();
     while (sSize < dSize) {
-        // TODO remove s bytes from front of buf
+        // TODO remove s bytes from front of buf, for now this works since everything gets sent at once
         int s = ::send(socket, buf, remain, 0);
 
         sSize += s;
