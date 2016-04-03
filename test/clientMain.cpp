@@ -11,6 +11,12 @@ int main() {
         cout << "sending: " << *message << endl;
         int size = client.send(&message);
         cout << "sent: " << size << " bytes" << endl;
+        delete message;
+        message = NULL;
+        size = client.read(&message);
+        cout << "received: " << size << " bytes" << endl;
+        cout << "message received: " << *message << endl;
+        delete message;
     }
     return 0;
 }

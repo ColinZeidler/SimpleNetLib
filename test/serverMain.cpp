@@ -29,6 +29,12 @@ int main() {
             int size = newClient->read(&message);
             cout << "received: " << size << " bytes" << endl;
             cout << "message received: " << *message << endl;
+            delete message;
+            message = new string("goodbye");
+            size = newClient->send(&message);
+            cout << "sent: " << size << " bytes" << endl;
+            cout << "message sent: " << *message << endl;
+            delete message;
         }
         delete newClient;
     }
