@@ -47,15 +47,14 @@ SimpleNetServer::~SimpleNetServer() {
  *  0 - OK, client accepted
  *  2 - ERROR, INVALID_SOCKET on accept
  */
-int SimpleNetServer::acceptConnection(SimpleNetClient *newConnection) {
+int SimpleNetServer::acceptConnection(SimpleNetClient *newClient) {
     SOCKADDR_IN i_client;
     int solen = sizeof(i_client);
-    SimpleNetConn *newConn = new SimpleNetConn(
-            accept(serverSock, (sockaddr *) &i_client, &solen));
-    newConn->setISock(i_client);
-    if (newConn->getSocket() == INVALID_SOCKET) {
+    SOCKET s = accept(serverSock, (sockaddr *) &i_client, &solen);
+    SimpleNetConn *newConn = new SimpleNetConn(s, i_client);
+    if (s == INVALID_SOCKET) {
         return 2;
     }
-    newConnection->setConnection(newConn);
+    newClient->setConnection(newConn);
     return 0;
 }

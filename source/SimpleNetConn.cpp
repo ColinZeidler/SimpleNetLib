@@ -30,8 +30,9 @@ SimpleNetConn::SimpleNetConn(const char *serverIp, u_short port) {
     connected = true;
 }
 
-SimpleNetConn::SimpleNetConn(SOCKET socket) {
+SimpleNetConn::SimpleNetConn(SOCKET socket, SOCKADDR_IN i_sock) {
     this->socket = socket;
+    i_socket = i_sock;
     connected = true;
 }
 
@@ -102,12 +103,4 @@ int SimpleNetConn::recv(string **data) {
     } else {
         return 0;
     }
-}
-
-SOCKET SimpleNetConn::getSocket() {
-    return socket;
-}
-
-void SimpleNetConn::setISock(SOCKADDR_IN i_sock) {
-    i_socket = i_sock;
 }

@@ -15,7 +15,7 @@ public:
     SimpleNetServer(u_short port);
     ~SimpleNetServer();
     
-    int acceptConnection(SimpleNetClient *newConnection);
+    int acceptConnection(SimpleNetClient *newClient);
 private:
 
 //variables
@@ -26,9 +26,6 @@ private:
     SOCKET serverSock;
     SOCKADDR_IN i_server;
     WSADATA Data;
-
-    fd_set fd;
-    timeval time;
 };
 
 

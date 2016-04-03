@@ -15,13 +15,12 @@ using namespace std;
 class SimpleNetConn {
 public:
     SimpleNetConn(const char *serverIp, u_short port);
-    SimpleNetConn(SOCKET socket);
+    SimpleNetConn(SOCKET socket, SOCKADDR_IN i_sock);
     ~SimpleNetConn();
 
     int send(string **data);
     int recv(string **data);
-    void setISock(SOCKADDR_IN i_sock);
-    SOCKET getSocket();
+    SOCKET getSocket() { return socket; }
     bool isConnected() { return connected; }
 private:
     SOCKET socket;
