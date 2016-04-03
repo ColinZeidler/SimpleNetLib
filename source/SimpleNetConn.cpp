@@ -10,6 +10,7 @@
  * attempts to establish a connection and create a new socket
  */
 SimpleNetConn::SimpleNetConn(const char *serverIp, u_short port) {
+    cleanup = true;
     WSADATA data;
     WSAStartup(MAKEWORD(2, 2), &data);
     socket = ::socket(AF_INET, SOCK_STREAM, 0);
@@ -36,6 +37,7 @@ SimpleNetConn::SimpleNetConn(SOCKET socket, SOCKADDR_IN i_sock) {
     this->socket = socket;
     i_socket = i_sock;
     connected = true;
+    cleanup = false;
 }
 
 /**
@@ -43,7 +45,9 @@ SimpleNetConn::SimpleNetConn(SOCKET socket, SOCKADDR_IN i_sock) {
  */
 SimpleNetConn::~SimpleNetConn() {
     closesocket(socket);
-    WSACleanup();
+    if (cleanup) {
+        WSACleanup(); //TODO this can't be done on the server, it breaks things
+    }
 }
 
 /**
@@ -61,8 +65,6 @@ int SimpleNetConn::send(string **data) {
     sizeBuf[2] = (char)((dSize >> 16) & 0xFF);
     sizeBuf[3] = (char)((dSize >> 24) & 0xFF);
     ::send(socket, sizeBuf, 4, 0);
-    cout << sizeBuf << endl;
-    cout << dSize << endl;
     //send data
     const char *buf = (*data)->c_str();
     while (sSize < dSize) {
@@ -83,19 +85,21 @@ int SimpleNetConn::send(string **data) {
  */
 int SimpleNetConn::recv(string **data) {
     (*data) = new string();
-    char buff[256];
-    int rLen = ::recv(socket, buff, 4, 0);
+    char sbuff[4];
+    int rLen = ::recv(socket, sbuff, 4, 0);
     if (rLen > 0) {
         uint32_t rSize = 0;
         uint32_t dSize = 0;
-        dSize |= buff[0];
-        dSize |= (buff[1] << 8);
-        dSize |= (buff[2] << 16);
-        dSize |= (buff[3] << 24);
+        dSize |= sbuff[0];
+        dSize |= (sbuff[1] << 8);
+        dSize |= (sbuff[2] << 16);
+        dSize |= (sbuff[3] << 24);
         uint32_t remain = dSize;
-
+        cout << "size = " << dSize << endl;
+        char buff[dSize];
         while (rSize < dSize) {
             int r = ::recv(socket, buff, remain, 0);
+            cout << "r = " << r << endl;
             (*data)->append(buff);
             rSize += r;
             remain -= r;

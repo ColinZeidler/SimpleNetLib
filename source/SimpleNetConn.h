@@ -26,6 +26,7 @@ private:
     SOCKET socket;
     SOCKADDR_IN i_socket;
     bool connected;
+    bool cleanup;
 };
 
 
