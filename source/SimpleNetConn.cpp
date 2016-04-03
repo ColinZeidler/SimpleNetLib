@@ -15,6 +15,7 @@ SimpleNetConn::SimpleNetConn(const char *serverIp, u_short port) {
     socket = ::socket(AF_INET, SOCK_STREAM, 0);
 
     if (socket == INVALID_SOCKET) {
+        cout << "invalid socket" << endl;
         connected = false;
         return;
     }
@@ -24,6 +25,7 @@ SimpleNetConn::SimpleNetConn(const char *serverIp, u_short port) {
     i_socket.sin_port = htons(port);
     int ss = ::connect(socket, (struct sockaddr *)&i_socket, sizeof(i_socket));
     if (ss != 0) {
+        cout << "unable to connect" << endl;
         connected = false;
         return;
     }
@@ -40,7 +42,6 @@ SimpleNetConn::SimpleNetConn(SOCKET socket, SOCKADDR_IN i_sock) {
  * ensures the connection is closed properly
  */
 SimpleNetConn::~SimpleNetConn() {
-    // TODO close connection
     closesocket(socket);
     WSACleanup();
 }

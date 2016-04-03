@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     cout << "Hello, World! Client" << endl;
-    SimpleNetClient client("localhost", 5432);
+    SimpleNetClient client("127.0.0.1", 5432);
     if (client.isConnected()) {
         string *message = new string("Hello");
         cout << "sending: " << *message << endl;

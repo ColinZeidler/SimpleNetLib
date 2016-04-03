@@ -21,19 +21,16 @@ SimpleNetServer::SimpleNetServer(u_short port) {
     //attempt to bind port
     err = bind(serverSock, (LPSOCKADDR)&i_server, sizeof(i_server));
     if (err != 0) {
-        //unsuccessful in binding port
+        cout << "unable to bind port" << endl;
         return;
     }
 
     //start listening to socket
     err = listen(serverSock, 2);
     if (err == SOCKET_ERROR) {
-        // there was an error attempting to listen...
+        cout << "unable to listen on port" << endl;
         return;
     }
-//    //set socket to be non blocking
-//    u_long nbio = 1;
-//    ioctlsocket(serverSock, FIONBIO, &nbio);
     success = 1;
 }
 
@@ -53,6 +50,7 @@ int SimpleNetServer::acceptConnection(SimpleNetClient *newClient) {
     SOCKET s = accept(serverSock, (sockaddr *) &i_client, &solen);
     SimpleNetConn *newConn = new SimpleNetConn(s, i_client);
     if (s == INVALID_SOCKET) {
+        cout << "error invalid socket" << endl;
         return 2;
     }
     newClient->setConnection(newConn);

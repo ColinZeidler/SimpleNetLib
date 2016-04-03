@@ -5,6 +5,7 @@
 #include "SimpleNetClient.h"
 
 SimpleNetClient::SimpleNetClient(string *address, u_short port) {
+    connected = false;
     connection = new SimpleNetConn(address->c_str(), port);
     if (connection->isConnected()) {
         connected = true;
@@ -12,6 +13,7 @@ SimpleNetClient::SimpleNetClient(string *address, u_short port) {
 }
 
 SimpleNetClient::SimpleNetClient(const char *address, u_short port) {
+    connected = false;
     connection = new SimpleNetConn(address, port);
     if (connection->isConnected()) {
         connected = true;
