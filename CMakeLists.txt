@@ -12,6 +12,11 @@ add_executable(SimpleNetClient ${CLIENT_SOURCE})
 add_library(SimpleNetworking ${SOURCE_FILES})
 
 target_link_libraries(SimpleNetworking ws2_32)
+if (WIN32)
+  target_compile_definitions(SimpleNetworking PRIVATE USE_WINDOWS)
+elif(UNIX)
+  target_compile_definitions(SimpleNetworking PRIVATE USE_UNIX)
+endif(WIN32)
 
 target_link_libraries(SimpleNetClient SimpleNetworking)
 target_link_libraries(SimpleNetServer SimpleNetworking)
