@@ -14,7 +14,7 @@ add_library(SimpleNetworking ${SOURCE_FILES})
 target_link_libraries(SimpleNetworking ws2_32)
 if (WIN32)
   target_compile_definitions(SimpleNetworking PRIVATE USE_WINDOWS)
-elif(UNIX)
+elseif(UNIX)
   target_compile_definitions(SimpleNetworking PRIVATE USE_UNIX)
 endif(WIN32)
 
