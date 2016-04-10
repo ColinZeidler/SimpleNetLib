@@ -6,6 +6,12 @@
 #include "SimpleNetServer.h"
 
 SimpleNetServer::SimpleNetServer(u_short port) {
+#ifdef USE_WINDOWS
+    cout << "WINDOWS Server" << endl;
+#endif
+#ifdef USE_UNIX
+    cout << "UNIX Server" << endl;
+#endif
     success = 0;
     int err = 0;
     //Start initializing the server connection
