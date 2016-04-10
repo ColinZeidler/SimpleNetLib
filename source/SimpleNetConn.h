@@ -11,6 +11,9 @@
 #endif
 #ifdef USE_UNIX
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+typedef int SOCKET;
 #endif
 
 #define ACCEPT_TIMEOUT_S 0
