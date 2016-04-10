@@ -6,7 +6,12 @@
 #define SIMPLENETWORKING_SIMPLENETCONN_H
 
 #include <string>
+#ifdef USE_WINDOWS
 #include <windows.h>
+#endif
+#ifdef USE_UNIX
+#include <sys/socket.h>
+#endif
 
 #define ACCEPT_TIMEOUT_S 0
 #define ACCEPT_TIMEOUT_MS 250

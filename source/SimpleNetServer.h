@@ -6,7 +6,14 @@
 #define SIMPLENETWORKING_SIMPLENETSERVER_H
 #include "SimpleNetConn.h"
 #include "SimpleNetClient.h"
+
+#ifdef USE_WINDOWS
 #include <windows.h>
+#endif
+
+#ifdef USE_UNIX
+#include <sys/socket.h>
+#endif
 
 
 using namespace std;
@@ -23,9 +30,12 @@ public:
     int success;
     
 private:
+#ifdef USE_WINDOWS
     SOCKET serverSock;
     SOCKADDR_IN i_server;
     WSADATA Data;
+#endif
+
 };
 
 

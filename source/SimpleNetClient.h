@@ -6,8 +6,13 @@
 #define SIMPLENETWORKING_SIMPLENETCLIENT_H
 
 #include <string>
-#include <windows.h>
 #include "SimpleNetConn.h"
+#ifdef USE_WINDOWS
+#include <windows.h>
+#endif
+#ifdef USE_UNIX
+#include <sys/socket.h>
+#endif
 
 using namespace std;
 class SimpleNetClient {
