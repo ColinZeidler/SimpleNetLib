@@ -24,6 +24,11 @@ The uint32 size of the data will need to be converted into an array of 4 chars t
 
 EX: size = 0x80008602 = char[0x02, 0x86, 0x00, 0x80] = data
 
+send methods, several to handle different data types, with one that handles anything if the size is specified
+
+    send(string** string) //simple string message sending
+    send(void* data, uint32_t size) //for all other structs
+
 ### Recieving
 Recieving will default to a non blocking operation for the first read, after recieving the data size it will continue to run blocking reads until the full data set has been read. The non blocking behaviour can be changed if the user requires.
 
